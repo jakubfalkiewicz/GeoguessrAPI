@@ -6,7 +6,6 @@ const Game = require("../models/Game");
 // Pobranie danych wszystkich użytkowników
 router.get("/", async (req, res) => {
   const Games = await Game.find({});
-  res.header("Access-Control-Allow-Origin", "*");
   return res.send(Games);
 });
 
@@ -35,19 +34,19 @@ router.post("/insertMany", async (req, res) => {
 // Pobranie danych użytkownika o podanym GameId
 router.get("/:GameId", async (req, res) => {
   const id = req.params.GameId;
-  const Game = await Game.find({ _id: id });
-  return res.send(Game);
+  const game = await Game.find({ _id: id });
+  return res.send(game);
 });
 
 // Zastąpienie danych użytkownika o podanym GameId nowym „kompletem”
 router.put("/:GameId", async (req, res) => {
   const id = req.params.GameId;
-  const Game = Game.find({ _id: id });
+  const game = Game.find({ _id: id });
   const filter = { _id: id };
   const update = {
-    name: req.body.name || Game.name,
-    description: req.body.description || Game.description,
-    locationsList: req.body.locationsList || Game.locationsList,
+    name: req.body.name || game.name,
+    description: req.body.description || game.description,
+    locationsList: req.body.locationsList || game.locationsList,
   };
   const updatedGame = await Game.findByIdAndUpdate(filter, update);
   return res.send({ updatedGame: updatedGame });
