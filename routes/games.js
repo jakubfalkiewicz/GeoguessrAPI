@@ -3,13 +3,14 @@ const router = express.Router();
 
 const Game = require("../models/Game");
 
-// Pobranie danych wszystkich użytkowników
+// get all games
 router.get("/", async (req, res) => {
   const Games = await Game.find({});
+  res.header("Access-Control-Allow-Origin", "*");
   return res.send(Games);
 });
 
-// Utworzenie nowego użytkownika
+// create new game
 router.post("/", async (req, res) => {
   Game.create(req.body)
     .then((result) => {
@@ -35,6 +36,7 @@ router.post("/insertMany", async (req, res) => {
 router.get("/:GameId", async (req, res) => {
   const id = req.params.GameId;
   const game = await Game.find({ _id: id });
+  res.header("Access-Control-Allow-Origin", "*");
   return res.send(game);
 });
 
