@@ -9,7 +9,14 @@ app.use("/users", users);
 const games = require("./routes/games");
 app.use("/games", games);
 const Game = require("./models/Game");
+const cors = require("cors");
+app.use(cors());
+app.use((_req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
 
+  next();
+});
 // Connection URL
 const url = process.env.URL;
 
