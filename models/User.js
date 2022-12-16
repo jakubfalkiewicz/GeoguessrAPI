@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-// Pole „_id” (które ma modelować userId) dodawane jest domyślnie, dlatego pomijamy je w deklaracji
 const userSchema = new Schema({
   login: { type: String, required: true },
   password: { type: String, required: true },

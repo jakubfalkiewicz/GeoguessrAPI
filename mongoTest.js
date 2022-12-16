@@ -6,7 +6,9 @@ app.use(express.json());
 require("dotenv").config();
 const users = require("./routes/users");
 app.use("/users", users);
-const User = require("./models/User");
+const games = require("./routes/games");
+app.use("/games", games);
+const Game = require("./models/Game");
 
 // Connection URL
 const url = process.env.URL;

@@ -3,13 +3,13 @@ const router = express.Router();
 
 const User = require("../models/User");
 
-// Pobranie danych wszystkich użytkowników
+// get all
 router.get("/", async (req, res) => {
   const users = await User.find({});
   return res.send(users);
 });
 
-// Utworzenie nowego użytkownika
+// register
 router.post("/register", async (req, res) => {
   User.create(req.body)
     .then((result) => {
@@ -21,21 +21,17 @@ router.post("/register", async (req, res) => {
     });
 });
 
-//Rejestracja
-// router.post("/register", async (req, res) => {
-//   const user = req.body;
-//   console.log(user);
-//   const newUser = await User.create({
-//     login: user.login,
-//     email: user.email,
-//     password: user.password,
-//     admin: user.admin,
-//     registrationDate: Date.now(),
-//   });
-//   return res.send(newUser);
-// });
+router.post("/insertMany", async (req, res) => {
+  const users = req.body;
+  const createUsers = async (usersList) => {
+    usersList.map((el) => User.create(el));
+  };
+  createUsers(users)
+    .then(res.send(users))
+    .catch((err) => res.send(err));
+});
 
-//Logowanie
+//Login
 router.post("/login", async (request, response) => {
   try {
     const user = await User.findOne({ login: request.body.login }).exec();
@@ -55,14 +51,12 @@ router.post("/login", async (request, response) => {
   }
 });
 
-// Pobranie danych użytkownika o podanym userId
 router.get("/:userId", async (req, res) => {
   const id = req.params.userId;
   const user = await User.find({ _id: id });
   return res.send(user);
 });
 
-// Zastąpienie danych użytkownika o podanym userId nowym „kompletem”
 router.put("/:userId", async (req, res) => {
   const id = req.params.userId;
   const user = User.find({ _id: id });
@@ -70,6 +64,7 @@ router.put("/:userId", async (req, res) => {
   const update = {
     login: req.body.login || user.login,
     email: req.body.email || user.email,
+    admin: req.body.admin || user.admin,
   };
   const updatedUser = await User.findByIdAndUpdate(filter, update);
   return res.send({ updatedUser: updatedUser });
