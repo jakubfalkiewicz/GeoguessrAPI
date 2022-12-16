@@ -6,6 +6,7 @@ const Game = require("../models/Game");
 // Pobranie danych wszystkich użytkowników
 router.get("/", async (req, res) => {
   const Games = await Game.find({});
+  res.header("Access-Control-Allow-Origin", "*");
   return res.send(Games);
 });
 
