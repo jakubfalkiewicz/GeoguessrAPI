@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const gameSchema = new Schema({
+const mapSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   postedBy: { type: Schema.Types.ObjectId, ref: "User" },
