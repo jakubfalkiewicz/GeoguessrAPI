@@ -14,4 +14,4 @@ const gameSchema = new Schema({
   createDate: { type: Date, default: Date.now },
 });
 
-module.exports = model("Game", gameSchema);
+module.exports = model("Map", mapSchema);

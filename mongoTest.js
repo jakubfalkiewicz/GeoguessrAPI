@@ -6,9 +6,8 @@ app.use(express.json());
 require("dotenv").config();
 const users = require("./routes/users");
 app.use("/users", users);
-const games = require("./routes/games");
-app.use("/games", games);
-const Game = require("./models/Game");
+const maps = require("./routes/maps");
+app.use("/maps", maps);
 const cors = require("cors");
 app.use(cors());
 app.use((_req, res, next) => {
