@@ -69,12 +69,4 @@ router.delete("/:MapId", async (req, res) => {
   });
 });
 
-// „Unacześnienie” wybranych danych użytkownika o podanym MapId
-router.patch("/:MapId", async (req, res) => {
-  const id = req.params.MapId;
-  return res.send({
-    patchMapId: id,
-  });
-});
-
 module.exports = router;

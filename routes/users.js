@@ -83,12 +83,4 @@ router.delete("/:userId", async (req, res) => {
   });
 });
 
-// „Unacześnienie” wybranych danych użytkownika o podanym userId
-router.patch("/:userId", async (req, res) => {
-  const id = req.params.userId;
-  return res.send({
-    patchUserId: id,
-  });
-});
-
 module.exports = router;

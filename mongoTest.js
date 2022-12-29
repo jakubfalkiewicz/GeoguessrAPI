@@ -8,6 +8,8 @@ const users = require("./routes/users");
 app.use("/users", users);
 const maps = require("./routes/maps");
 app.use("/maps", maps);
+const games = require("./routes/games");
+app.use("/games", games);
 const cors = require("cors");
 app.use(cors());
 app.use((_req, res, next) => {
