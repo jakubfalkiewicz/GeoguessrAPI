@@ -1,6 +1,8 @@
 const { Schema, model } = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
 const gameSchema = new Schema({
+  _id: { type: String, default: uuidv4 },
   time: { type: Number, required: true },
   player: { type: Schema.Types.ObjectId, ref: "User" },
   mapId: { type: Schema.Types.ObjectId, ref: "Map" },
