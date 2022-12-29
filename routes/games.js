@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
 
 // create new Game
 router.post("/", async (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   Game.create(req.body)
     .then((result) => {
       res.send(result);
