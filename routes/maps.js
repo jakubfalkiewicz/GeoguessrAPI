@@ -43,14 +43,16 @@ router.get("/:MapId", async (req, res) => {
 // Zastąpienie danych użytkownika o podanym MapId nowym „kompletem”
 router.put("/:MapId", async (req, res) => {
   const id = req.params.MapId;
-  const map = Map.find({ _id: id });
+  const map = await Map.find({ _id: id });
+  // console.log(map.locationsList[0]);
   const filter = { _id: id };
   const update = {
     name: req.body.name || map.name,
     description: req.body.description || map.description,
     locationsList: req.body.locationsList || map.locationsList,
   };
-  const updatedMap = await Map.findByIdAndUpdate(filter, update);
+  // console.log(update);
+  const updatedMap = await Map.updateOne(filter, update);
   return res.send({ updatedMap: updatedMap });
 });
 router.delete("/deleteAll", async (req, res) => {
