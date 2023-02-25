@@ -22,6 +22,7 @@ const gameSchema = new Schema({
     },
   ],
   timesList: [Number],
+  finishDate: { type: Date },
   createDate: { type: Date, default: Date.now },
 });
 

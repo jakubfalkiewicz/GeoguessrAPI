@@ -11,6 +11,7 @@ const mapSchema = new Schema({
       lng: Number,
     },
   ],
+  country: { type: String, required: false },
   createDate: { type: Date, default: Date.now },
 });
 

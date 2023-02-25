@@ -55,6 +55,18 @@ router.put("/:MapId", async (req, res) => {
   const updatedMap = await Map.updateOne(filter, update);
   return res.send({ updatedMap: updatedMap });
 });
+
+router.put("/addLocations/:MapId", async (req, res) => {
+  const id = req.params.MapId;
+  const map = await Map.find({ _id: id });
+  const filter = { _id: id };
+  const update = {
+    locationsList: map[0].locationsList.concat(req.body.locationsList),
+  };
+  const updatedMap = await Map.updateOne(filter, update);
+  return res.send({ updatedMap: updatedMap });
+});
+
 router.delete("/deleteAll", async (req, res) => {
   await Map.deleteMany({});
   return res.send("Deleted all");
