@@ -50,6 +50,7 @@ router.put("/:MapId", async (req, res) => {
     name: req.body.name || map.name,
     description: req.body.description || map.description,
     locationsList: req.body.locationsList || map.locationsList,
+    country: req.body.country || map.country,
   };
   // console.log(update);
   const updatedMap = await Map.updateOne(filter, update);

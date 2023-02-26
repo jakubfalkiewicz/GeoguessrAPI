@@ -41,6 +41,7 @@ router.put("/:GameId", async (req, res) => {
     currentRound: req.body.currentRound || game.currentRound,
     roundsList: req.body.roundsList || game.roundsList,
     timesList: req.body.timesList || game.timesList,
+    finishDate: req.body.finishDate || game.finishDate,
   };
   // console.log(update);
   const updatedGame = await Game.updateOne(filter, update);
