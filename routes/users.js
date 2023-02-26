@@ -9,16 +9,21 @@ router.get("/", async (req, res) => {
   return res.send(users);
 });
 
+function extractUserNameFromEmail(email) {
+  const userName = email.substring(0, email.indexOf("@")); // Get the username before the @ sign
+  const sanitizedUserName = userName.replace(/[\.\_\-\+]/g, " "); // Replace special characters with spaces
+  return sanitizedUserName;
+}
+
 // register
 router.post("/register", async (req, res) => {
-  User.create(req.body)
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((error) => {
-      res.status(400);
-      res.end(error);
-    });
+  try {
+    const username = extractUserNameFromEmail(req.body.email);
+    const user = await User.create({ ...req.body, username: username });
+    res.send(user);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 });
 
 router.post("/insertMany", async (req, res) => {
@@ -34,9 +39,9 @@ router.post("/insertMany", async (req, res) => {
 //Login
 router.post("/login", async (request, response) => {
   try {
-    const user = await User.findOne({ login: request.body.login }).exec();
+    const user = await User.findOne({ email: request.body.email }).exec();
     if (!user) {
-      return response.status(400).send({ message: "The login does not exist" });
+      return response.status(400).send({ message: "The email does not exist" });
     }
     user.comparePassword(request.body.password, (error, match) => {
       if (!match) {
@@ -62,7 +67,7 @@ router.put("/:userId", async (req, res) => {
   const user = User.find({ _id: id });
   const filter = { _id: id };
   const update = {
-    login: req.body.login || user.login,
+    username: req.body.username || user.username,
     email: req.body.email || user.email,
     admin: req.body.admin || user.admin,
   };
