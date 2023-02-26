@@ -23,7 +23,7 @@ const gameSchema = new Schema({
   ],
   timesList: [Number],
   finishDate: { type: Date },
-  coutnry: { type: String },
+  country: { type: String },
   createDate: { type: Date, default: Date.now },
 });
 
