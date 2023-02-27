@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
@@ -50,7 +51,11 @@ router.post("/login", async (request, response) => {
           .send({ message: "The password is invalid" });
       }
     });
-    response.send({ ...user._doc, logged: true });
+    const token = jwt.sign({ ...user._doc }, "secret-key", {
+      expiresIn: "7d",
+    });
+    response.send({ token });
+    // response.send({ ...user._doc, logged: true });
   } catch (error) {
     response.status(500).send(error);
   }
