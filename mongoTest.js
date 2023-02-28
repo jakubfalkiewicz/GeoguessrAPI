@@ -1,12 +1,24 @@
-const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
 const express = require("express");
-const app = express();
-app.use(express.json());
-require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
-app.use(cors());
-app.options("*", cors()); // include before other routes
+require("dotenv").config();
+
+const app = express();
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3000/",
+      "https://geoguessr-clone.netlify.app/",
+      "https://geoguessr-clone.netlify.app",
+    ],
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
+
 const users = require("./routes/users");
 app.use("/users", users);
 const maps = require("./routes/maps");
@@ -14,23 +26,10 @@ app.use("/maps", maps);
 const games = require("./routes/games");
 app.use("/games", games);
 
-app.use((_req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  next();
-});
-// Connection URL
 const url = process.env.URL;
-
-// Database Name
-const dbName = "myproject";
-
-// Create a new MongoClient
-const client = new MongoClient(url);
 
 const mongoose = require("mongoose");
 
-// Łączymy się z bazą MongoDB i jeśli się to uda, uruchamiamy serwer API.
 mongoose
   .connect(url, {
     useNewUrlParser: true,

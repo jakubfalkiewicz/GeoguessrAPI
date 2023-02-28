@@ -6,13 +6,11 @@ const Game = require("../models/Game");
 // get all Games
 router.get("/", async (req, res) => {
   const Games = await Game.find({});
-  res.header("Access-Control-Allow-Origin", "*");
   return res.send(Games);
 });
 
 // create new Game
 router.post("/", async (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
   Game.create(req.body)
     .then((result) => {
       res.send(result);
@@ -27,7 +25,6 @@ router.post("/", async (req, res) => {
 router.get("/:GameId", async (req, res) => {
   const id = req.params.GameId;
   const game = await Game.find({ _id: id });
-  res.header("Access-Control-Allow-Origin", "*");
   return res.send(game);
 });
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const dayjs = require("dayjs");
 
 const User = require("../models/User");
 
@@ -50,12 +51,29 @@ router.post("/login", async (request, response) => {
           .status(400)
           .send({ message: "The password is invalid" });
       }
+      const token = jwt.sign({ id: user._id, email: user.email }, "secret-key");
+
+      response.cookie("token", token, {
+        httpOnly: true,
+        expires: dayjs().add(7, "days").toDate(),
+      });
+      user.password = undefined;
+      response.send({ message: "Logged in successfully", user: user });
     });
-    const token = jwt.sign({ ...user._doc }, "secret-key", {
-      expiresIn: "7d",
-    });
-    response.send({ token });
-    // response.send({ ...user._doc, logged: true });
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+router.post("/logout", async (request, response) => {
+  try {
+    const user = await User.findOne({ email: request.body.email }).exec();
+    if (!user) {
+      return response.status(400).send({ message: "The email does not exist" });
+    }
+
+    response.clearCookie("token");
+    response.json({ message: "Logged out successfully" });
   } catch (error) {
     response.status(500).send(error);
   }

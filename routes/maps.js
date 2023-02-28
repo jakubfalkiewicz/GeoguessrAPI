@@ -6,7 +6,6 @@ const Map = require("../models/Map");
 // get all maps
 router.get("/", async (req, res) => {
   const Maps = await Map.find({});
-  res.header("Access-Control-Allow-Origin", "*");
   return res.send(Maps);
 });
 
@@ -36,7 +35,6 @@ router.post("/insertMany", async (req, res) => {
 router.get("/:MapId", async (req, res) => {
   const id = req.params.MapId;
   const map = await Map.find({ _id: id });
-  res.header("Access-Control-Allow-Origin", "*");
   return res.send(map);
 });
 
