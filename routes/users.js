@@ -6,9 +6,13 @@ const dayjs = require("dayjs");
 const User = require("../models/User");
 
 // get all
-router.get("/", async (req, res) => {
-  const users = await User.find({});
-  return res.send(users);
+router.get("/", async (_req, res) => {
+  try {
+    const users = await User.find({});
+    return res.send(users);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 function extractUserNameFromEmail(email) {
@@ -29,13 +33,16 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/insertMany", async (req, res) => {
-  const users = req.body;
-  const createUsers = async (usersList) => {
-    usersList.map((el) => User.create(el));
-  };
-  createUsers(users)
-    .then(res.send(users))
-    .catch((err) => res.send(err));
+  try {
+    const users = req.body;
+    const createUsers = async (usersList) => {
+      usersList.map((el) => User.create(el));
+    };
+    await createUsers(users);
+    return res.send(users);
+  } catch (error) {
+    return res.status(400).send(error);
+  }
 });
 
 //Login
@@ -80,9 +87,13 @@ router.post("/logout", async (request, response) => {
 });
 
 router.get("/:userId", async (req, res) => {
-  const id = req.params.userId;
-  const user = await User.find({ _id: id });
-  return res.send(user);
+  try {
+    const id = req.params.userId;
+    const user = await User.find({ _id: id });
+    return res.send(user);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 router.put("/:userId", async (req, res) => {
@@ -102,18 +113,26 @@ router.put("/:userId", async (req, res) => {
     res.send({ error: err.message });
   }
 });
-router.delete("/deleteAll", async (req, res) => {
-  await User.deleteMany({});
-  return res.send("Deleted all");
+router.delete("/deleteAll", async (_req, res) => {
+  try {
+    await User.deleteMany({});
+    return res.send("Deleted all");
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 // Usuniecie użytkownika o podanym userId
 router.delete("/:userId", async (req, res) => {
-  const id = req.params.userId;
-  const userToDelete = await User.findByIdAndDelete({ _id: id });
-  return res.send({
-    deletedUserId: id,
-  });
+  try {
+    const id = req.params.userId;
+    await User.findByIdAndDelete({ _id: id });
+    return res.send({
+      deletedUserId: id,
+    });
+  } catch (error) {
+    return res.status(500).send(error);
+  }
 });
 
 module.exports = router;
