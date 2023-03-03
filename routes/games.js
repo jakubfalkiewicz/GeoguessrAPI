@@ -58,4 +58,23 @@ router.delete("/:GameId", async (req, res) => {
   });
 });
 
+router.patch("/gameRound/:gameId", async (req, res) => {
+  try {
+    const id = req.params.gameId;
+    const round = req.body.round;
+    console.log(round);
+
+    const game = await Game.find({ _id: id });
+    game[0].roundsList.push(round);
+    game[0].currentRound++;
+    const addRound = await Game.updateOne(
+      { _id: id },
+      { roundsList: game[0].roundsList, currentRound: game[0].currentRound }
+    );
+    return res.send(game[0]);
+  } catch (err) {
+    res.send({ error: err });
+  }
+});
+
 module.exports = router;

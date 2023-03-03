@@ -86,16 +86,21 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.put("/:userId", async (req, res) => {
-  const id = req.params.userId;
-  const user = User.find({ _id: id });
-  const filter = { _id: id };
-  const update = {
-    username: req.body.username || user.username,
-    email: req.body.email || user.email,
-    admin: req.body.admin || user.admin,
-  };
-  const updatedUser = await User.findByIdAndUpdate(filter, update);
-  return res.send({ updatedUser: updatedUser });
+  try {
+    const id = req.params.userId;
+    const user = User.find({ _id: id });
+    const filter = { _id: id };
+    const update = {
+      username: req.body.username || user.username,
+      email: req.body.email || user.email,
+      admin: req.body.admin || user.admin,
+      experience: req.body.experience || user.experience,
+    };
+    const updatedUser = await User.findByIdAndUpdate(filter, update);
+    res.send({ updatedUser: updatedUser });
+  } catch (err) {
+    res.send({ error: err.message });
+  }
 });
 router.delete("/deleteAll", async (req, res) => {
   await User.deleteMany({});
