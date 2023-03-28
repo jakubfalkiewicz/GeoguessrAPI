@@ -47,6 +47,7 @@ router.post("/insertMany", async (req, res) => {
 
 //Login
 router.post("/login", async (request, response) => {
+  console.log(request.body);
   try {
     const user = await User.findOne({ email: request.body.email }).exec();
     if (!user) {

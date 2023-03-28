@@ -13,6 +13,27 @@ router.get("/", async (_req, res) => {
   }
 });
 
+router.get("/byUser/:userId", async (req, res) => {
+  try {
+    const id = req.params.userId;
+    const game = await Game.find({ player: id });
+    return res.send(game);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// Pobranie danych użytkownika o podanym GameId
+router.get("/:GameId", async (req, res) => {
+  try {
+    const id = req.params.GameId;
+    const game = await Game.find({ gameId: id });
+    return res.send(game);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 // create new Game
 router.post("/", async (req, res) => {
   try {
@@ -23,28 +44,16 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Pobranie danych użytkownika o podanym GameId
-router.get("/:GameId", async (req, res) => {
-  try {
-    const id = req.params.GameId;
-    const game = await Game.find({ _id: id });
-    return res.send(game);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
 // Zastąpienie danych użytkownika o podanym GameId nowym „kompletem”
 router.put("/:GameId", async (req, res) => {
   try {
     const id = req.params.GameId;
-    const game = await Game.find({ _id: id });
-    const filter = { _id: id };
+    const filter = { gameId: id };
     const update = {
-      currentRound: req.body.currentRound || game.currentRound,
-      roundsList: req.body.roundsList || game.roundsList,
-      timesList: req.body.timesList || game.timesList,
-      finishDate: req.body.finishDate || game.finishDate,
+      currentRound: req.body.currentRound,
+      roundsList: req.body.roundsList,
+      timesList: req.body.timesList,
+      finishDate: req.body.finishDate,
     };
     const updatedGame = await Game.updateOne(filter, update);
     return res.send({ updatedGame: updatedGame });

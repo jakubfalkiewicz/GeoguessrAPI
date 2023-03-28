@@ -16,10 +16,12 @@ const gameSchema = new Schema({
   ],
   currentRound: { type: Number, required: true },
   roundsList: [
-    {
-      lat: Number,
-      lng: Number,
-    },
+    [
+      {
+        lat: Number,
+        lng: Number,
+      },
+    ],
   ],
   timesList: [Number],
   finishDate: { type: Date },
