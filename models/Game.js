@@ -23,6 +23,7 @@ const gameSchema = new Schema({
       },
     ],
   ],
+  zoomLevel: Number,
   timesList: [Number],
   finishDate: { type: Date },
   country: { type: String },
