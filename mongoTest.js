@@ -43,4 +43,5 @@ mongoose
     app.listen(apiPort, () => {
       console.log(`API server available from: http://localhost:4000`);
     });
-  });
+  })
+  .catch((err) => console.log(err));
